@@ -1,17 +1,18 @@
 import * as $ from "jquery"
 import { IOptions } from './options'
 
-interface IPagination {
+interface IPagination<TEntity> {
+  data: TEntity[]
   Init(): void
   Search(): void
-  SetOptions(options: IOptions): IPagination
+  SetOptions(options: IOptions)
 }
 
-export class Pagination implements IPagination {
+export class Pagination<TEntity> implements IPagination<TEntity> {
 
   private paginationOptions: IOptions
   private baseElement: JQuery
-  private ListData: any[]
+  data: TEntity[]
 
   constructor(element: JQuery) {
     this.baseElement = element
@@ -23,7 +24,6 @@ export class Pagination implements IPagination {
 
   SetOptions(options: IOptions) {
     this.paginationOptions = options
-    return this
   }
   
   Search() {
