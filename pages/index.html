@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <title>HeartBeat</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css"/>
+    <script  src='../thirdParty/jquery-3.2.1.min.js'></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="filter-section" class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary search-btn" type="Search">Search</button>
+            </div>
+            <input type="text" class="form-control" value="TypeName" name="CustomerName" placeholder="">
+        </div>
+        <table id="table-content" class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Serial</th>
+                    <th scope="col">detail</th>
+                    <th scope="col">status</th>
+                    <th scope="col">type</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script src="../dist/bundle.js"></script>
+    <script>
+        
+
+        // $(document).ready( function(){
+        //     // let ListPagination = new Pagination()
+        //     // ListPagination.Search()
+        //     $(".container").Pagination({
+        //         filterContainer:'',
+        //         filterInputSelector:'.form-control',
+        //         contentContainer:'#table-content',
+        //         submitSelector:".search"
+        //     });
+        // })
+    </script>
+</body>
+
+</html>
