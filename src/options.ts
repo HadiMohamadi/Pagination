@@ -3,23 +3,24 @@ export interface IOptions {
     containers?:IContainers,
     pager?:IPager,
     selectors?:ISelectors
-    columns?: IColumns[],
+    columns: IColumns[],
     api: IAjax
   }
 
   export interface ISelectors{
-    filter: string,
-    submit: string,
-    page: string,
+    filter?: string,
+    submit?: string,
+    page?: string,
   }
   export interface IContainers{
-      filter: string,
-      content: string,
-      pager: string
+      filter?: string,
+      content?: string,
+      pager?: string
   }
   
   export interface IColumns {
     key: string,
+    sortEnabled?: boolean,
     beforeDisplay?: any,
     valueType: string,
   }
@@ -28,7 +29,10 @@ export interface IOptions {
     order: "ASCEND" | "DESCEND"
   }
   export interface IPager {
-    itemsPerPage: number,
+    enabled: boolean,
+    pageSize: number,
+    totalItems?: number,
+    currentPage?: number
   }
   export interface IAjax {
     url: string,

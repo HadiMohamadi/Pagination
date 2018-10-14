@@ -10,7 +10,8 @@ paginator.SetOptions({
     },
     columns:[{
         key: 'capsule_id',
-        valueType: 'string'
+        valueType: 'string',
+        sortEnabled: true
     },{
         key: 'capsule_serial',
         valueType: 'string'
@@ -32,11 +33,15 @@ paginator.SetOptions({
     selectors:{
         submit:'.search-btn',
         filter:'.form-control',
-        page:''
+        page:'.page-btn'
     },
     api:{
         url: 'https://api.spacexdata.com/v2/parts/caps',
         method: 'GET'
+    },
+    pager:{
+        enabled: true,
+        pageSize:10,
     }
 })
 paginator.Init()
