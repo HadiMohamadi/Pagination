@@ -22,10 +22,14 @@ export class Pagination implements IPagination {
   }
 
   Init() {
+    $(this.paginationOptions.selectors.submit).unbind('click')
+    $(this.baseElement).find("[sort=enabled]").unbind('click')
+    $(this.paginationOptions.selectors.page).unbind('click')
+
     $(this.paginationOptions.selectors.submit).bind('click', () => this.Search())
     $(this.baseElement).find("[sort=enabled]").bind('click', (e) => this.SortClick(e))
-    if(this.paginationOptions.pager.enabled)
-      $(this.paginationOptions.selectors.page).bind('click', (e) => this.PageClick(e))
+    $(this.paginationOptions.selectors.page).bind('click', (e) => this.PageClick(e))
+    $(this.baseElement).find(".page-size").bind('change', (e) => this.PageSizeClick(e))
   }
 
   SetOptions(options: IOptions) {
@@ -54,17 +58,26 @@ export class Pagination implements IPagination {
   }
 
   Search() {   
+    console.log("Search Called")
     this.RemoveRows()
     this.SendRequest()
   }
 
   private PageClick(e) {
+    console.log("Page Clicked")
     this.Pager.pagerOptions.currentPage = e.target.attributes.getNamedItem('page-number').value
     this.Search()
   }
 
-  private SortClick(e) {    
+  private PageSizeClick(e) {
+    console.log("PageSize Clicked")
+    this.Pager.pagerOptions.pageSize = e.target.value
+    this.Search()
+  }
+  private SortClick(e) {   
+    
     this.paginationOptions.sort.key = e.target.attributes.getNamedItem('name').value
+
 
     if(this.lastSortKey == this.paginationOptions.sort.key )
     {
@@ -73,15 +86,16 @@ export class Pagination implements IPagination {
       else
         this.paginationOptions.sort.order = "ASCEND"
     }
-
+    this.lastSortKey = this.paginationOptions.sort.key
+    console.log("sort Clicked", this.paginationOptions.sort.order)
     this.Search()
   }
 
   private SendRequest() {
     let formData = {}
-    //if(this.paginationOptions.api.method == "POST")
+    if(this.paginationOptions.api.method == "POST")
       formData = this.SerializeData()
-      console.log("fromData", formData)
+    console.log("fromData", formData)
     let xhttp
     if ((<any>window).XMLHttpRequest) {
       xhttp = new XMLHttpRequest()
@@ -97,10 +111,11 @@ export class Pagination implements IPagination {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         Response = JSON.parse(xhttp.responseText)
         this.AppendRows(Response)
-        return
+        return false
       }
       else if (xhttp.status == 500) {
         console.log("Failed To Fetch Data")
+        return false
       }
     };
 
@@ -123,8 +138,14 @@ export class Pagination implements IPagination {
   }
 
   private AppendRows(data: any[]) {
+    if(this.paginationOptions.sort.order === "ASCEND")
+      data = data.sort((a,b) => Number(a) - Number(b))
+    else
+      data = data.sort((b,a) => Number(b) - Number(a))
+      
     this.data = data
     this.Pager.pagerOptions.totalItems = data.length
+
     let itemsToShow = data.splice(((this.Pager.pagerOptions.currentPage - 1)* this.Pager.pagerOptions.pageSize), this.Pager.pagerOptions.pageSize)
 
     itemsToShow.forEach(function (value) {

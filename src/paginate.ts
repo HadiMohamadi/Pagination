@@ -13,7 +13,6 @@ export class Paginate {
         this.pagerOptions = options.pager
         this.pagerOptions.currentPage = 1
         this.pagerHolderElement = element
-        console.log("opts", this.opts)
     }
 //callback?: () => any
     Initialize = (callback?: () => void) => {
@@ -48,10 +47,7 @@ export class Paginate {
         this.createPages()
 
         if(callback !=undefined)
-        {
-            callback()
-            console.log("after callback")    
-        }
+            callback() 
     }
 
     private createPages = () => {
@@ -62,7 +58,7 @@ export class Paginate {
         this.pages.forEach(function (pageNumber) {
             let li = $("<li>")
             li.text(pageNumber)
-            li.attr("page-number", pageNumber)
+            li.attr("page-number", pageNumber).css({"display":"inline","margin":"0 10px 0 0", "cursor":"pointer"})
             li.addClass(this.opts.selectors.page.replace(".",""))
 
             if(this.pagerOptions.currentPage == pageNumber)
@@ -72,9 +68,17 @@ export class Paginate {
         }.bind(this));
         $(UL).appendTo($(Row))
         $(Row).appendTo($(this.pagerHolderElement))
+
+        var PageSizes = $("<select>")
+        PageSizes.addClass("page-size")
+        this.defaultPageSizes.forEach(function (size) {
+            let selected = this.pagerOptions.pageSize == size ? 'selected' : ''
+            $(PageSizes).append(`<option ${selected} value="${size}">${size}</option>`)
+        }.bind(this))
+        $(PageSizes).appendTo($(this.pagerHolderElement))
+
     }
     private removePagination(){
-        console.log("Pagination Removed")
         $(this.pagerHolderElement).html('')
     }
 }

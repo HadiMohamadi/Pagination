@@ -41,7 +41,7 @@ paginator.SetOptions({
     },
     pager:{
         enabled: true,
-        pageSize:10,
+        pageSize:5,
     }
 })
 paginator.Init()
